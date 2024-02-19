@@ -77,16 +77,21 @@ const LearnerSubmissions = [
 ];
 
 let getLearnerData = (CourseInfo, AssignmentGroup, LearnerSubmission) => {
-  let result = [];
+  const result = [];
 
   for (let i = 0; i < LearnerSubmission.length; i++) {
     submittedAssignment = {};
+
     submittedAssignment["id"] = LearnerSubmission[i].learner_id;
+
     let pointsPossible =
       AssignmentGroup.assignments[LearnerSubmission[i].assignment_id - 1]
         .points_possible;
+
+    let submissionScore = LearnerSubmission[i].submission.score;
+
     submittedAssignment[`${LearnerSubmission[i].assignment_id}`] =
-      LearnerSubmission[i].submission.score / pointsPossible;
+      submissionScore / pointsPossible;
 
     result.push(submittedAssignment);
   }
