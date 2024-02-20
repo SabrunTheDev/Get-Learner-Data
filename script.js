@@ -1,10 +1,29 @@
+// let checkDate = () => {
+//   let submissionDate = "2023-02-15";
+//   let submittedDate = "2023-02-16";
+
+//   return submittedDate <= submissionDate;
+// };
+
+// console.log(checkDate());
+
+// if (checkDate() == true) {
+//   console.log("Submitted on time");
+// }
+
+// switch (checkDate()) {
+//   case true:
+//     console.log("True");
+//   case false:
+//     break;
+// }
+
 // The provided course information.
 const CourseInfo = {
   id: 451,
   name: "Introduction to JavaScript",
 };
 
-// The provided assignment group.
 const AssignmentGroup = {
   id: 12345,
   name: "Fundamentals of JavaScript",
@@ -32,7 +51,6 @@ const AssignmentGroup = {
   ],
 };
 
-// The provided learner submission data.
 const LearnerSubmissions = [
   {
     learner_id: 125,
@@ -79,23 +97,45 @@ const LearnerSubmissions = [
 let getLearnerData = (CourseInfo, AssignmentGroup, LearnerSubmission) => {
   const result = [];
 
-  for (let i = 0; i < LearnerSubmission.length; i++) {
-    submittedAssignment = {};
+  for (let i = 0; i < LearnerSubmissions.length; i++) {
+    const submittedAtDate = new Date(
+      LearnerSubmission[i].submission.submitted_at
+    );
+    const dueAtDate = new Date(
+      AssignmentGroup.assignments[LearnerSubmission[i].assignment_id - 1].due_at
+    );
+    const currentDate = new Date();
 
-    submittedAssignment["id"] = LearnerSubmission[i].learner_id;
+    if (dueAtDate < currentDate) {
+      let submittedAssignment = {};
+      let learnerAssignId = LearnerSubmission[i].assignment_id;
+      let assignmentId =
+        AssignmentGroup.assignments[LearnerSubmission[i].assignment_id - 1].id;
 
-    let pointsPossible =
-      AssignmentGroup.assignments[LearnerSubmission[i].assignment_id - 1]
-        .points_possible;
+      submittedAssignment["id"] = LearnerSubmission[i].learner_id;
 
-    let submissionScore = LearnerSubmission[i].submission.score;
+      let pointsPossible =
+        AssignmentGroup.assignments[LearnerSubmission[i].assignment_id - 1]
+          .points_possible;
 
-    submittedAssignment[`${LearnerSubmission[i].assignment_id}`] =
-      submissionScore / pointsPossible;
+      let submissionScore = LearnerSubmission[i].submission.score;
 
-    result.push(submittedAssignment);
+      submittedAssignment[`${LearnerSubmission[i].assignment_id}`] =
+        submissionScore / pointsPossible;
+
+      submittedAssignment["avg"] = {};
+
+      if ((learnerAssignId = assignmentId)) {
+        if (submittedAtDate > dueAtDate) {
+          submittedAssignment["avg"] = (submissionScore / pointsPossible) * 0.9;
+        } else {
+          submittedAssignment["avg"] = submissionScore / pointsPossible;
+        }
+      }
+
+      result.push(submittedAssignment);
+    }
   }
-
   return result;
 };
 
