@@ -61,3 +61,7 @@ The module is equipped with basic error handling mechanisms to guarantee accurat
 ```javascript
 Error: Invalid course ID. Expected 451, but your assignment group is in 452.
 ```
+
+## Built With
+
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>
