@@ -56,7 +56,7 @@ console.log(result);
 
 The module is equipped with basic error handling mechanisms to guarantee accurate data input. If an error occurs during processing, the module logs relevant error messages to the console for debugging purposes.
 
-- **If CourseInfo.id && AssignmentGroup.course_id do not match, the module will return:**
+- **If (CourseInfo.id !== AssignmentGroup.course_id), the module will return:**
 
 ```javascript
 Error: Invalid course ID. Expected 451, but your assignment group is in 452.
