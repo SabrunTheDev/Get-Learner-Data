@@ -1,24 +1,3 @@
-// let checkDate = () => {
-//   let submissionDate = "2023-02-15";
-//   let submittedDate = "2023-02-16";
-
-//   return submittedDate <= submissionDate;
-// };
-
-// console.log(checkDate());
-
-// if (checkDate() == true) {
-//   console.log("Submitted on time");
-// }
-
-// switch (checkDate()) {
-//   case true:
-//     console.log("True");
-//   case false:
-//     break;
-// }
-
-// The provided course information.
 const CourseInfo = {
   id: 451,
   name: "Introduction to JavaScript",
