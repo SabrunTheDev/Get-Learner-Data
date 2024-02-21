@@ -94,48 +94,65 @@ const LearnerSubmissions = [
   },
 ];
 
-let getLearnerData = (CourseInfo, AssignmentGroup, LearnerSubmission) => {
+let getLearnerData = (course, ag, submission) => {
   const result = [];
 
-  for (let i = 0; i < LearnerSubmissions.length; i++) {
-    const submittedAtDate = new Date(
-      LearnerSubmission[i].submission.submitted_at
-    );
-    const dueAtDate = new Date(
-      AssignmentGroup.assignments[LearnerSubmission[i].assignment_id - 1].due_at
-    );
-    const currentDate = new Date();
-
-    if (dueAtDate < currentDate) {
-      let submittedAssignment = {};
-      let learnerAssignId = LearnerSubmission[i].assignment_id;
-      let assignmentId =
-        AssignmentGroup.assignments[LearnerSubmission[i].assignment_id - 1].id;
-
-      submittedAssignment["id"] = LearnerSubmission[i].learner_id;
-
-      let pointsPossible =
-        AssignmentGroup.assignments[LearnerSubmission[i].assignment_id - 1]
-          .points_possible;
-
-      let submissionScore = LearnerSubmission[i].submission.score;
-
-      submittedAssignment[`${LearnerSubmission[i].assignment_id}`] =
-        submissionScore / pointsPossible;
-
-      submittedAssignment["avg"] = {};
-
-      if ((learnerAssignId = assignmentId)) {
-        if (submittedAtDate > dueAtDate) {
-          submittedAssignment["avg"] = (submissionScore / pointsPossible) * 0.9;
-        } else {
-          submittedAssignment["avg"] = submissionScore / pointsPossible;
-        }
-      }
-
-      result.push(submittedAssignment);
+  const learnerMap = new Map();
+  for (let i = 0; i < submission.length; i++) {
+    let learnerID = submission[i].learner_id;
+    let assignmentID = submission[i].assignment_id;
+    let submissionVar = submission[i].submission;
+    let submittedDate = submission[i].submission.submitted_at;
+    let learnerScore = submission[i].submission.score;
+    if (!learnerMap.has(learnerID)) {
+      // If doesn't exist in Map
+      learnerMap.set(learnerID, [[assignmentID, submissionVar]]);
+    } else {
+      // If does exist in Map
+      learnerMap.get(learnerID).push([assignmentID, submissionVar]);
     }
   }
+
+  learnerMap.forEach((value, key) => {
+    let student = {};
+    student["id"] = key;
+    student["avg"] = 0;
+    let total_score = 0;
+    let total_possible_score = 0;
+
+    for (let j = 0; j < value.length; j++) {
+      // console.log(value[j]);
+      const submittedAtDate = new Date(value[j][1].submitted_at);
+
+      const dueAtDate = new Date(ag.assignments[value[j][0] - 1].due_at);
+
+      const currentDate = new Date();
+
+      if (dueAtDate < currentDate) {
+        let learnerAssignId = value[j][0];
+        let assignmentId = ag.assignments[value[j][0] - 1].id;
+        let pointsPossible = ag.assignments[value[j][0] - 1].points_possible;
+        let submissionScore = value[j][1].score;
+
+        student[`${value[j][0]}`] = submissionScore / pointsPossible;
+
+        if ((learnerAssignId = assignmentId)) {
+          if (submittedAtDate > dueAtDate) {
+            student[`${value[j][0]}`] =
+              (submissionScore / pointsPossible) * 0.9;
+            total_score += submissionScore * 0.9;
+            total_possible_score += pointsPossible;
+          } else {
+            total_score += submissionScore;
+            total_possible_score += pointsPossible;
+          }
+        }
+      }
+    }
+
+    student["avg"] = total_score / total_possible_score;
+    result.push(student);
+  });
   return result;
 };
 
