@@ -6,7 +6,7 @@ My official code:
 
 - `script.js`: my main solution meeting requirements
 
-My initial attemps
+My initial attempt/s:
 
 - `attempt1.js`: attempt meeting some requirements
 
