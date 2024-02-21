@@ -24,11 +24,12 @@ The Get Learner Data processor is a JavaScript module designed to analyze and pr
 
 ### Output:
 
-````javascript
+```javascript
 [
   { 1: 0.94, 2: 1, id: 125, avg: 0.985 },
   { 1: 0.78, 2: 0.8400000000000001, id: 132, avg: 0.825 },
 ];
+```
 
 ## Features
 
@@ -49,4 +50,4 @@ The Get Learner Data processor is a JavaScript module designed to analyze and pr
 ```javascript
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 console.log(result);
-````
+```
