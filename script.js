@@ -107,25 +107,30 @@ let getLearnerData = (course, ag, submission) => {
 
       const currentDate = new Date();
 
-      if (dueAtDate < currentDate) {
-        let learnerAssignId = value[j][0];
-        let assignmentId = ag.assignments[value[j][0] - 1].id;
-        let pointsPossible = ag.assignments[value[j][0] - 1].points_possible;
-        let submissionScore = value[j][1].score;
+      try {
+        if (dueAtDate < currentDate) {
+          let learnerAssignId = value[j][0];
+          let assignmentId = ag.assignments[value[j][0] - 1].id;
+          let pointsPossible = ag.assignments[value[j][0] - 1].points_possible;
+          let submissionScore = value[j][1].score;
 
-        student[`${value[j][0]}`] = submissionScore / pointsPossible;
+          student[`${value[j][0]}`] = submissionScore / pointsPossible;
 
-        if ((learnerAssignId = assignmentId)) {
-          if (submittedAtDate > dueAtDate) {
-            student[`${value[j][0]}`] =
-              (submissionScore / pointsPossible) * 0.9;
-            total_score += submissionScore * 0.9;
-            total_possible_score += pointsPossible;
-          } else {
-            total_score += submissionScore;
-            total_possible_score += pointsPossible;
+          if ((learnerAssignId = assignmentId)) {
+            if (submittedAtDate > dueAtDate) {
+              student[`${value[j][0]}`] =
+                (submissionScore / pointsPossible) * 0.9;
+              total_score += submissionScore * 0.9;
+              total_possible_score += pointsPossible;
+            } else {
+              total_score += submissionScore;
+              total_possible_score += pointsPossible;
+            }
           }
         }
+      } catch (error) {
+        console.error("Error processing data:", error.message);
+        break;
       }
     }
 
