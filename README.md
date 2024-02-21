@@ -1,5 +1,15 @@
 # Get-Learner-Data
 
+# SBA 308: JavaScript Fundamentals
+
+My official code:
+
+- `script.js`: my main solution meeting requirements
+
+My initial attemps
+
+- `attempt1.js`: attempt meeting some requirements
+
 - A script that returns learner data within an object
   - Returns learner id
   - Returns learner's weighted average
