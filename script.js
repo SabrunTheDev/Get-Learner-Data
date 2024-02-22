@@ -125,10 +125,13 @@ let getLearnerData = (course, ag, submission) => {
 
             student[`${value[j][0]}`] = submissionScore / pointsPossible;
 
-            if ((learnerAssignId = assignmentId)) {
+            if (learnerAssignId === assignmentId) {
               if (submittedAtDate > dueAtDate) {
-                student[`${value[j][0]}`] =
-                  (submissionScore / pointsPossible) * 0.9;
+                // Returns a decimal to the nearest hundredth, uses parseFloat() to convert back to a number
+                // Can use Number() or +() instead of parseFloat() in this scenerio
+                student[`${value[j][0]}`] = parseFloat(
+                  ((submissionScore / pointsPossible) * 0.9).toFixed(2)
+                );
                 total_score += submissionScore * 0.9;
                 total_possible_score += pointsPossible;
               } else {
